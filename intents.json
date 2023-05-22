@@ -1,0 +1,67 @@
+{"intents": [
+    {
+        "tag": "greetings",
+        "patterns": [
+            "hi",
+            "hello",
+            "good morning",
+            "howdy",
+            "hey",
+            "whats up",
+            "good afternoon",
+            "yo",
+            "hows it going",
+            "how r u",
+            "how are you",
+            "good day"
+        ],
+        "responses": [
+            "Hello! How may I help you?",
+            "Greetings! How may I assist you today?",
+            "Hello! What can I do for you?"
+        ]
+    },
+    {
+        "tag": "goodbye",
+        "patterns": [
+            "bye",
+            "goodbye",
+            "good night",
+            "c u",
+            "see you later"
+        ],
+        "responses": [
+            "See you later!",
+            "Good night!",
+            "Until next time!",
+            "Bye for now!"
+        ]
+    },
+    {
+        "tag": "calendar",
+        "patterns": [
+            "add to my calendar",
+            "schedule for",
+            "book for",
+            "mark in calender",
+            "create event on"
+        ],
+        "responses": [
+            "Okay, I have set that date in your calendar!",
+            "Done! I have marked that date in your calendar."
+        ]
+    },
+    {
+        "tag": "reminder",
+        "patterns": [
+            "set reminder for",
+            "set reminder on",
+            "create reminder on"
+        ],
+        "responses": [
+            "I have set a reminder for you.",
+            "Okay, the reminder has been set!"
+        ]
+    }
+
+]}
