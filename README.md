@@ -1,2 +1,2 @@
 # Virtual-Assistant
-A virtual assistant to help with everyday tasks
+A virtual assistant to help with productivity tasks
