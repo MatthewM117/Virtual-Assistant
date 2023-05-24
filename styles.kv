@@ -1,0 +1,66 @@
+<Widgets>
+    Button:
+        text: "press me!"
+        on_release: root.popup_button()
+
+WindowManager:
+    MainWindow:
+    SecondWindow:
+
+<P>:
+    Label:
+        text: "You pressed the button"
+        size_hint: 0.6, 0.2
+        pos_hint: {"x": 0.2, "top": 1}
+
+    Button:
+        text: "popup!"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x": 0.1, "y": 0.1}
+
+<MainWindow>:
+    name: "mainwindow"
+
+    themessage: themessage
+    ai_answer: ai_answer
+
+    Widgets:
+
+    FloatLayout:
+        Button:
+            pos_hint: {"right": 1, "top": 1}
+            size_hint: 0.1, 0.1
+            text: "next"
+            on_release:
+                app.root.current = "secondwindow"
+                root.manager.transition.direction = "left"
+
+        TextInput:
+            id: themessage
+            multiline: False
+            size_hint: 0.6, 0.05
+            pos_hint: {"center_x": 0.5, "center_y": 0.65}
+
+        Button:
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            size_hint: 0.4, 0.05
+            text: "Enter"
+            on_release: root.enter_message()
+
+        TextInput:
+            id: ai_answer
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            size_hint: 0.5, None
+            text_size: None, None
+            readonly: True
+            cursor_blink: False
+            text: "AnswerrrrrrrrrrrrrrrrrrrrrrrrrrrrrAnswerrrrrrrrrrrrrrrrrrrrrrrrrrrrrAnswerrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+
+<SecondWindow>:
+    name: "secondwindow"
+
+    Button: 
+        text: "Back"
+        on_release:
+            app.root.current = "mainwindow"
+            root.manager.transition.direction = "right"
