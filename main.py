@@ -6,18 +6,18 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.uix.widget import Widget
+from kivy.properties import ObjectProperty
 
 intents = get_intents()
 
-class MainGrid(GridLayout):
-    def __init__(self, **kwargs):
-        super(MainGrid, self).__init__(**kwargs)
-        self.cols = 2
+class MainGrid(Widget):
+    message = ObjectProperty(None)
 
-        # widgets
-        self.add_widget(Label(text="Message"))
-        self.message = TextInput(multiline=False)
-        self.add_widget(self.message)
+    def enter_message(self):
+        print("Your message: ", self.message.text)
+        self.message.text = ''
 
 class MainApp(App):
     def build(self):
