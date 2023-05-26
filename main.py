@@ -10,6 +10,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from texttospeech import text_to_speech
+import threading
 
 from kivy.config import Config
 Config.set('graphics', 'width', '390')
@@ -28,13 +30,17 @@ class MainWindow(Screen):
         else:
             Clock.unschedule(self.animate_text)
 
+    # add a debounce to not allow users to type another message before ai is done talking.
+
     def enter_message(self):
-        print('pressed! ', self.themessage.text)
         ints = predict_class(self.themessage.text)
         self.result = get_response(ints, intents)
         self.index = 0
         self.ai_answer.text = ''
+        thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+        thread1.start()
         Clock.schedule_interval(self.animate_text, 0.1)
+        #thread1.join()
         self.themessage.text = ''
 
 class SecondWindow(Screen):

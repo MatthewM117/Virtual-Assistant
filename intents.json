@@ -62,6 +62,43 @@
             "I have set a reminder for you.",
             "Okay, the reminder has been set!"
         ]
+    },
+    {
+        "tag": "creators",
+        "patterns": [
+            "who created you",
+            "who made you"
+        ],
+        "responses": [
+            "I was created by Matthew Morelli and Marcus Morelli (unrelated)."
+        ]
+    },
+    {
+        "tag": "about",
+        "patterns": [
+            "what do you do",
+            "what can you do",
+            "what are you",
+            "who are you",
+            "how to use",
+            "what can i do"
+        ],
+        "responses": [
+            "I am an AI designed specifically to assist you with personal productivity tasks such as creating to-do lists, setting reminders or calendar events, and much more! For more information on what I can do, visit our website: https://example.com"
+        ]
+    },
+    {
+        "tag": "thanks",
+        "patterns": [
+            "thanks",
+            "thank you",
+            "much appreciated"
+        ],
+        "responses": [
+            "Anytime! Please let me know if you need anything else.",
+            "You're welcome! Let me know if there's anything else I can do for you.",
+            "I'm glad I could help!"
+        ]
     }
 
 ]}
