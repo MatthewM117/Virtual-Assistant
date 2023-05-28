@@ -37,7 +37,7 @@ class MainWindow(Screen):
         ints = predict_class(self.themessage.text)
         print(ints)
         if ints[0]['intent'] == 'greetings':
-            print('------------------lOLOLOLOLOLLLLLLLLLLLLLLLLL')
+            print('intent = greetings!')
         self.result = get_response(ints, intents)
         self.index = 0
         self.ai_answer.text = ''
