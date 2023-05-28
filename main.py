@@ -12,6 +12,7 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from texttospeech import text_to_speech
 import threading
+from tools import parse_todo_list
 
 from kivy.config import Config
 Config.set('graphics', 'width', '390')
@@ -34,6 +35,9 @@ class MainWindow(Screen):
 
     def enter_message(self):
         ints = predict_class(self.themessage.text)
+        print(ints)
+        if ints[0]['intent'] == 'greetings':
+            print('------------------lOLOLOLOLOLLLLLLLLLLLLLLLLL')
         self.result = get_response(ints, intents)
         self.index = 0
         self.ai_answer.text = ''
