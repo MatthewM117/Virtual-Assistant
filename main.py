@@ -13,6 +13,7 @@ from kivy.clock import Clock
 from texttospeech import text_to_speech
 import threading
 from tools import parse_todo_list
+from tools import parse_calendar_event
 
 from kivy.config import Config
 Config.set('graphics', 'width', '390')
@@ -51,6 +52,18 @@ class MainWindow(Screen):
         Clock.schedule_interval(self.animate_text, 0.1)
         self.themessage.text = ''
 
+    def create_calendar_event(self):
+        self.index = 0
+        self.ai_answer.text = ''
+        calendar_event = parse_calendar_event(self.themessage.text)
+        event_name = calendar_event[0]
+        event_date = calendar_event[1]
+        self.result = "Absolutely! '" + event_name + "' has been added to your calendar on " + event_date + '.'
+        thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+        thread1.start()
+        Clock.schedule_interval(self.animate_text, 0.1)
+        self.themessage.text = ''
+
     # add a debounce to not allow users to type another message before ai is done talking.
 
     def enter_message(self):
@@ -70,6 +83,9 @@ class MainWindow(Screen):
             return
         if ints[0]['intent'] == 'todo':
             self.create_todo_list()
+            return
+        elif ints[0]['intent'] == 'calendar':
+            self.create_calendar_event()
             return
         self.result = get_response(ints, intents)
         self.index = 0
