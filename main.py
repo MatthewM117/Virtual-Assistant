@@ -31,13 +31,46 @@ class MainWindow(Screen):
         else:
             Clock.unschedule(self.animate_text)
 
+    def create_todo_list(self):
+        self.index = 0
+        self.ai_answer.text = ''
+        todo_list = parse_todo_list(self.themessage.text)
+        self.result = "Certainly! "
+        todo_list_length = len(todo_list)
+        if (todo_list_length) == 1:
+            self.result += "'" + todo_list[0] + "'" + ' has been added to your to-do list.'
+        else:
+            for i in range(todo_list_length):
+                if i == todo_list_length - 1:
+                    self.result += "and '" + todo_list[i] + "'"
+                    break
+                self.result += "'" + todo_list[i] + "', "
+            self.result += ' have been added to your to-do list.'
+        thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+        thread1.start()
+        Clock.schedule_interval(self.animate_text, 0.1)
+        self.themessage.text = ''
+
     # add a debounce to not allow users to type another message before ai is done talking.
 
     def enter_message(self):
         ints = predict_class(self.themessage.text)
+        #{'intent': 'greetings', 'probability': '0.9999906'}] = near perfect match
+        #[{'intent': 'greetings', 'probability': '0.97283036'}] = unrelated
         print(ints)
-        if ints[0]['intent'] == 'greetings':
-            print('intent = greetings!')
+        if float(ints[0]['probability']) < 0.99:
+            # for unrelated message
+            self.result = "I'm sorry, but I do not understand. I am an AI designed to help with personal productivity tasks."
+            self.index = 0
+            self.ai_answer.text = ''
+            thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+            thread1.start()
+            Clock.schedule_interval(self.animate_text, 0.1)
+            self.themessage.text = ''
+            return
+        if ints[0]['intent'] == 'todo':
+            self.create_todo_list()
+            return
         self.result = get_response(ints, intents)
         self.index = 0
         self.ai_answer.text = ''

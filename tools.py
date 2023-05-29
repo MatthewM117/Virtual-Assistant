@@ -37,6 +37,9 @@ def parse_todo_list(message):
         'review', 'evaluate', 'assess',
         'submit', 'send', 'deliver'
     ]
+
+    create_words = ['create', 'make', 'set', 'add']
+
     todo_list = []
     
     for i in range(len(words)):
@@ -57,6 +60,24 @@ def parse_todo_list(message):
             # don't add the 'create to-do list' to the todo list
             if 'todo' not in new_task and 'to-do' not in new_task and 'to do' not in new_task:
                 todo_list.append(full_task.strip())
+            else:
+                if len(todo_list) < 1:
+                    continue
+                for j in create_words:
+                    if j not in new_task:
+                        temp = full_task.split()
+                        for k in range(len(temp)):
+                            if temp[k] == 'to' and ((temp[k + 1] == 'todo' or temp[k + 1] == 'to-do' or temp[k + 1] == 'to do') or (temp[k + 1] == 'my') or (temp [k + 1] == 'the')):
+                                for l in range(len(temp)):
+                                    if len(temp) - l <= 4:
+                                        if temp[l] == 'to' or temp[l] == 'todo' or temp[l] == 'to-do' or temp[l] == 'to do' or temp[l] == 'list' or temp[l] == 'my' or temp[l] == 'the':
+                                            temp[l] = temp[l].replace(temp[l], '')
+                        
+                        new_full_task = ''
+                        for k in temp:
+                            new_full_task += ' ' + k + ' '
+                        todo_list.append(new_full_task.strip())
+                        break
             full_task = ''
 
     return todo_list

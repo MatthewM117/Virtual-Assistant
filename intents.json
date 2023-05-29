@@ -99,6 +99,20 @@
             "You're welcome! Let me know if there's anything else I can do for you.",
             "I'm glad I could help!"
         ]
+    },
+    {
+        "tag": "todo",
+        "patterns": [
+            "todo list",
+            "create todo list",
+            "make todo list",
+            "new to-do list",
+            "add to to-do list",
+            "set to do list"
+        ],
+        "responses": [
+            "I have added those things to your to-do list."
+        ]
     }
 
 ]}
