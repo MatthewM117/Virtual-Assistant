@@ -100,6 +100,10 @@ def parse_calendar_event(message):
             second_index = i
         elif words[i] in months:
             month = words[i] + ' ' + words[i + 1]
+            if words[i + 2] == 'for':
+                event_and_date.append(' '.join(words[i + 3:]).strip())
+                event_and_date.append(month.strip())
+                return event_and_date
 
     event_and_date.append(' '.join(words[first_index:second_index]).strip())
     event_and_date.append(month.strip())
