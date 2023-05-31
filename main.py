@@ -13,7 +13,7 @@ from kivy.clock import Clock
 from texttospeech import text_to_speech
 import threading
 from tools import parse_todo_list
-from tools import parse_calendar_event
+from calendar_utils import parse_calendar_message
 
 from kivy.config import Config
 Config.set('graphics', 'width', '390')
@@ -55,10 +55,14 @@ class MainWindow(Screen):
     def create_calendar_event(self):
         self.index = 0
         self.ai_answer.text = ''
-        calendar_event = parse_calendar_event(self.themessage.text)
+        calendar_event = parse_calendar_message(self.themessage.text)
         event_name = calendar_event[0]
         event_date = calendar_event[1]
-        self.result = "Absolutely! '" + event_name + "' has been added to your calendar on " + event_date + '.'
+        event_time = calendar_event[2]
+        if 'tomorrow' not in event_date:
+            self.result = "Absolutely! '" + event_name + "' has been added to your calendar on " + event_date + ' from ' + event_time + '.'
+        else:
+            self.result = "Absolutely! '" + event_name + "' has been added to your calendar for " + event_date + ' from ' + event_time + '.'
         thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
         thread1.start()
         Clock.schedule_interval(self.animate_text, 0.1)

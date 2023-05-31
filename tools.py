@@ -82,37 +82,6 @@ def parse_todo_list(message):
 
     return todo_list
 
-def parse_calendar_event(message):
-    words = message.split()
-    for i in words:
-        i = i.lower()
-
-    event_and_date = [] # event name is index 0, date is index 1
-
-    months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'jan', 'feb', 'mar', 'apr', 'may', 'june', 'jul', 'aug', 'sept', 'oct', 'nov', 'dec']
-
-    # example input: add dentist appointment to my calendar on july 22nd
-    # example input: create new event on july 22nd for dentist appointment - need to implement this
-    for i in range(len(words)):
-        if words[i] == 'add':
-            first_index = i + 1
-        elif words[i] == 'to':
-            second_index = i
-        elif words[i] in months:
-            month = words[i] + ' ' + words[i + 1]
-            if words[i + 2] == 'for':
-                event_and_date.append(' '.join(words[i + 3:]).strip())
-                event_and_date.append(month.strip())
-                return event_and_date
-
-    event_and_date.append(' '.join(words[first_index:second_index]).strip())
-    event_and_date.append(month.strip())
-    return event_and_date
-
 if __name__ == "__main__":
     sentence = input('enter something: ')
-    test = parse_calendar_event(sentence)
-    print(test[0])
-    print(test[1])
-    #print(parse_calendar_event(sentence))
-    #print(parse_todo_list(sentence))
+    print(parse_todo_list(sentence))
