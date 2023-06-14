@@ -10,8 +10,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
-from texttospeech import text_to_speech
-import threading
+#from texttospeech import text_to_speech
+#import threading
 from tools import parse_todo_list
 from calendar_utils import parse_calendar_message
 
@@ -47,8 +47,8 @@ class MainWindow(Screen):
                     break
                 self.result += "'" + todo_list[i] + "', "
             self.result += ' have been added to your to-do list.'
-        thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
-        thread1.start()
+        #thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+        #thread1.start()
         Clock.schedule_interval(self.animate_text, 0.1)
         self.themessage.text = ''
 
@@ -63,8 +63,8 @@ class MainWindow(Screen):
             self.result = "Absolutely! '" + event_name + "' has been added to your calendar on " + event_date + ' from ' + event_time + '.'
         else:
             self.result = "Absolutely! '" + event_name + "' has been added to your calendar for " + event_date + ' from ' + event_time + '.'
-        thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
-        thread1.start()
+        #thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+        #thread1.start()
         Clock.schedule_interval(self.animate_text, 0.1)
         self.themessage.text = ''
 
@@ -80,8 +80,8 @@ class MainWindow(Screen):
             self.result = "I'm sorry, but I do not understand. I am an AI designed to help with personal productivity tasks."
             self.index = 0
             self.ai_answer.text = ''
-            thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
-            thread1.start()
+            #thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+            #thread1.start()
             Clock.schedule_interval(self.animate_text, 0.1)
             self.themessage.text = ''
             return
@@ -94,8 +94,8 @@ class MainWindow(Screen):
         self.result = get_response(ints, intents)
         self.index = 0
         self.ai_answer.text = ''
-        thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
-        thread1.start()
+        #thread1 = threading.Thread(target=text_to_speech, args=(self.result,))
+        #thread1.start()
         Clock.schedule_interval(self.animate_text, 0.1)
         #thread1.join()
         self.themessage.text = ''

@@ -42,6 +42,8 @@ def parse_todo_list(message):
 
     todo_list = []
     
+    first_word = words[0]
+
     for i in range(len(words)):
         if words[i] in task_words:
             task_index = i
@@ -61,7 +63,7 @@ def parse_todo_list(message):
             if 'todo' not in new_task and 'to-do' not in new_task and 'to do' not in new_task:
                 todo_list.append(full_task.strip())
             else:
-                if len(todo_list) < 1:
+                if len(todo_list) < 1 and first_word != "add":
                     continue
                 for j in create_words:
                     if j not in new_task:
