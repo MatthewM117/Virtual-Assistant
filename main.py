@@ -1,7 +1,6 @@
 from ai import predict_class
 from ai import get_response
 from ai import get_intents
-import kivy
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
@@ -31,6 +30,10 @@ class MainWindow(Screen):
             self.index += 1
         else:
             Clock.unschedule(self.animate_text)
+
+    def stop_text_animation(self):
+        Clock.unschedule(self.animate_text)
+        self.ai_answer.text = self.result
 
     def create_todo_list(self):
         self.index = 0

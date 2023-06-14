@@ -47,6 +47,12 @@ WindowManager:
             text: "Enter"
             on_release: root.enter_message()
 
+        Button:
+            pos_hint: {"center_x": 0.1, "center_y": 0.6}
+            size_hint: 0.1, 0.05
+            text: "Speed up"
+            on_release: root.stop_text_animation()
+
         TextInput:
             id: ai_answer
             pos_hint: {"center_x": 0.5, "center_y": 0.2}
