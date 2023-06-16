@@ -80,9 +80,65 @@ def parse_calendar_message(text):
 
     return event_and_date
 
+def check_if_month(word):
+    months = [
+        'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november',
+        'december', 'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sept', 'aug', 'oct', 'nov', 'dec'
+    ]
+
+    if word in months:
+        return True
+    return False
+
+def is_number(num):
+    return int(num)
+
+def parse_calendar_message2(text):
+    useless_words = [
+        'to my calendar',
+        'my calendar'
+    ]
+
+    for i in useless_words:
+        if i in text:
+            text = text.replace(i, '')
+
+    doc = nlp(text)
+
+    # Extract tokens and POS tags
+    tokens = [token.text for token in doc]
+    pos_tags = [token.pos_ for token in doc]
+
+    my_dict = {key: value for key, value in zip(tokens, pos_tags)}
+
+    events = []
+    date = []
+    consecutive_nouns = ''
+
+    for i in my_dict:
+        if my_dict[i] == 'NOUN':
+            consecutive_nouns += i + ' '
+        elif my_dict[i] == 'PROPN':
+            if check_if_month(i):
+                date.append(i)
+        else:
+            events.append(consecutive_nouns.strip())
+            consecutive_nouns = ''
+
+    #print(my_dict['jul'])
+    print(events)
+    print(date)
+
+
 if __name__ == '__main__':
-    text = input("enter something: ")
+    while True:
+        text = input("enter something: ")
+        if text == 'q':
+            break
+        parse_calendar_message2(text)
+    '''
     res = parse_calendar_message(text)
     print (res[0], ' ', res[1], ' ', res[2])
     print(get_numbered_date(res[1]))
+    '''
     
