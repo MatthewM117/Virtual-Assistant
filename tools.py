@@ -93,13 +93,21 @@ def parse_todo_list(message):
 
 def parse_todo_list2(message):
 
-    possible_todo_list_words = [ # possible combinations such as "on my todo list"
+    possible_todo_list_words = [ # possible combinations of useless words we dont want to look at.
         'on my todo list',
         'on my to do list',
         'on my to-do list',
         'to my todo list',
         'to my to do list',
-        'to my to-do list'
+        'to my to-do list',
+        'create todo list with',
+        'create to-do list with',
+        'create to do list with',
+        'create todo list',
+        'create to-do list',
+        'create to do list',
+        'on it',
+        'hi'
     ]
 
     for i in possible_todo_list_words:
@@ -129,7 +137,7 @@ def parse_todo_list2(message):
     # need to hardcode some special cases such as 'finish' because spacy doesnt recognize it as a verb
     for i in my_dict:
         if index == len(my_dict) - 1:
-            if my_dict[i] == 'NOUN':
+            if my_dict[i] == 'NOUN' or my_dict[i] == 'PRON':
                 consecutive_nouns += i + ' '
                 important_words.append(consecutive_nouns.strip())
                 break
@@ -158,8 +166,8 @@ def parse_todo_list2(message):
             important_words_stripped.append(i)
 
     #print(important_words_stripped)
+    #print(my_dict['it'])
     return important_words_stripped
-    #print(my_dict['put'])
     '''
     nouns = []
 
@@ -200,4 +208,4 @@ if __name__ == "__main__":
             break
         #input_text = 'please add dentist appointment, fix ship, finish letter, to my todo list thanks'
         #input_text = 'Please buy milk and eggs, and also complete the homework assignment.'
-        parse_todo_list2(input_text)
+        print(parse_todo_list2(input_text))
