@@ -11,7 +11,7 @@ from kivy.uix.popup import Popup
 from kivy.clock import Clock
 #from texttospeech import text_to_speech
 #import threading
-from tools import parse_todo_list
+from tools import parse_todo_list2
 from calendar_utils import parse_calendar_message
 
 from kivy.config import Config
@@ -38,7 +38,7 @@ class MainWindow(Screen):
     def create_todo_list(self):
         self.index = 0
         self.ai_answer.text = ''
-        todo_list = parse_todo_list(self.themessage.text)
+        todo_list = parse_todo_list2(self.themessage.text)
         self.result = "Certainly! "
         todo_list_length = len(todo_list)
         if (todo_list_length) == 1:
