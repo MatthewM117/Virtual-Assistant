@@ -54,6 +54,12 @@ def parse_todo_list2(message):
 
     index = 0
 
+    prev_word = ''
+    # give prev_word a proper value so it can be used on first iteration of next for loop
+    for i in my_dict:
+        prev_word = i
+        break
+
     # gather conescutive nouns
     # need to hardcode some special cases such as 'finish' and 'clean' because spacy doesnt recognize it as a verb
     for i in my_dict:
@@ -72,10 +78,12 @@ def parse_todo_list2(message):
             do_once = True
             index += 1
             continue
-
-        if (my_dict[i] == "NOUN" or my_dict[i] == "DET" or my_dict[i] == 'PRON' or my_dict[i] == 'ADP' or my_dict[i] == 'ADJ' or my_dict[i] == 'PROPN' or my_dict[i] == 'NUM') and i != 'finish' and i != 'clean':
+        
+        if ((my_dict[i] == "NOUN" or my_dict[i] == "DET" or my_dict[i] == 'PRON' or my_dict[i] == 'ADP' or my_dict[i] == 'ADJ' or my_dict[i] == 'PROPN' or my_dict[i] == 'NUM' or i == 'to') and i != 'finish' and i != 'clean') or ((i == 'clean' and prev_word == 'to') or (i == 'finish' and prev_word == 'to')) or (my_dict[i] == 'VERB' and my_dict[prev_word] == 'VERB'):
+            if (i == 'finish' and prev_word == 'to'):
+                print('UYAAA')
             consecutive_nouns += i + ' '
-        elif my_dict[i] == "VERB" or i == 'finish' or i == 'clean':
+        elif (my_dict[i] == "VERB" or i == 'finish' or i == 'clean'):
             important_words.append(consecutive_nouns.strip())
             consecutive_nouns = ''
             consecutive_nouns += i + ' '
@@ -84,6 +92,8 @@ def parse_todo_list2(message):
             consecutive_nouns = ''
         
         index += 1
+
+        prev_word = i
     
     important_words_stripped = []
 
