@@ -1,4 +1,5 @@
 import spacy
+from datetime import date, timedelta
 model_path = "language_model/en_core_web_sm-3.5.0"
 nlp = spacy.load(model_path)
 
@@ -26,7 +27,7 @@ def parse_todo_list2(message):
         'create to-do list',
         'create to do list',
         'on it',
-        'hi'
+        'hi '
     ]
 
     for i in possible_todo_list_words:
@@ -44,6 +45,7 @@ def parse_todo_list2(message):
 
     my_dict = {key: value for key, value in zip(tokens, pos_tags)}
     #print(my_dict)
+    #print(my_dict['22'])
 
     important_words = []
     consecutive_nouns = ''
@@ -53,9 +55,14 @@ def parse_todo_list2(message):
     index = 0
 
     # gather conescutive nouns
-    # need to hardcode some special cases such as 'finish' because spacy doesnt recognize it as a verb
+    # need to hardcode some special cases such as 'finish' and 'clean' because spacy doesnt recognize it as a verb
     for i in my_dict:
         if index == len(my_dict) - 1:
+            if consecutive_nouns != '':
+                consecutive_nouns += i + ' '
+                important_words.append(consecutive_nouns.strip())
+                break
+
             if my_dict[i] == 'NOUN' or my_dict[i] == 'PRON':
                 consecutive_nouns += i + ' '
                 important_words.append(consecutive_nouns.strip())
@@ -66,56 +73,77 @@ def parse_todo_list2(message):
             index += 1
             continue
 
-        if (my_dict[i] == "NOUN" or my_dict[i] == "DET" or my_dict[i] == 'PRON' or my_dict[i] == 'ADP' or my_dict[i] == 'ADJ' or my_dict[i] == 'PROPN') and i != 'finish':
+        if (my_dict[i] == "NOUN" or my_dict[i] == "DET" or my_dict[i] == 'PRON' or my_dict[i] == 'ADP' or my_dict[i] == 'ADJ' or my_dict[i] == 'PROPN' or my_dict[i] == 'NUM') and i != 'finish' and i != 'clean':
             consecutive_nouns += i + ' '
-        elif my_dict[i] == "VERB" or i == 'finish':
+        elif my_dict[i] == "VERB" or i == 'finish' or i == 'clean':
             important_words.append(consecutive_nouns.strip())
             consecutive_nouns = ''
             consecutive_nouns += i + ' '
         else:
             important_words.append(consecutive_nouns.strip())
             consecutive_nouns = ''
-
+        
         index += 1
-
+    
     important_words_stripped = []
 
+    # remove blank indexes
     for i in important_words:
         if i != '':
             important_words_stripped.append(i)
 
+    for i in range(0, len(important_words_stripped)):
+        if 'do list' in important_words_stripped[i]:
+            del important_words_stripped[i]
+            break
+
     #print(important_words_stripped)
-    #print(my_dict['it'])
-    return important_words_stripped
-    '''
-    nouns = []
 
-    for i in range (0, len(pos_tags)):
-        if pos_tags[i] == 'NOUN':
-            nouns.append(tokens[i])
+    unimportant_words = [
+        ' a ', 'a ', ' it ', ' i ', 'i ', 'have ', 'have', ' an '
+    ]
+    # remove unnecessary words like 'have', 'a' or 'it
+    for i in range(len(important_words_stripped)):
+        for j in unimportant_words:
+            if j in important_words_stripped[i]:
+                new_string = important_words_stripped[i].replace(j, '')
+                important_words_stripped[i] = new_string
+
+    #print(important_words_stripped)
+    #print(my_dict['clean'])
+    #print(my_dict['house'])
+    # remove accidental words being added as tasks, such as ['days from', 'it in my']
+    for i in range(len(important_words_stripped)):
+        noun_count = 0
+        propn_count = 0
+        verb_count = 0
+        num_count = 0
+        split_string = important_words_stripped[i].split()
+        if len(split_string) == 1:
+            important_words_stripped[i] = ''
+        else:
+            for j in split_string:
+                if my_dict[j] == 'NOUN':
+                    noun_count += 1
+                if my_dict[j] == "PROPN":
+                    propn_count += 1
+                if my_dict[j] == "VERB":
+                    verb_count += 1
+                if my_dict[j] == 'NUM':
+                    num_count += 1
+            if (noun_count < 2 and propn_count < 2 and verb_count < 1 and num_count < 1 and (noun_count != 1 and propn_count != 1)):
+                important_words_stripped[i] = ''
+
+    # remove blank indexes again
+    important_words_stripped2 = []
+
+    for i in important_words_stripped:
+        if i != '':
+            important_words_stripped2.append(i)
     
-    print(nouns)
-    '
+    #print(important_words_stripped)
 
-    task_phrases = []
-    
-    for chunk in doc.noun_chunks:
-        task_phrases.append(chunk.text)
-
-    print(task_phrases)
-
-    nouns = []
-
-    for i in task_phrases:
-        split_i = i.split()
-        curr_string = ''
-        for j in split_i:
-            if my_dict[j] == 'NOUN' or my_dict[j] == 'VERB':
-                curr_string += j + ' '
-        nouns.append(curr_string.strip())
-
-    print(nouns)
-    '''
+    return important_words_stripped2
 
 if __name__ == "__main__":
     #sentence = input('enter something: ')
