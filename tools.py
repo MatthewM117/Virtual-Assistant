@@ -131,8 +131,16 @@ def parse_todo_list2(message):
                     verb_count += 1
                 if my_dict[j] == 'NUM':
                     num_count += 1
+
             if (noun_count < 2 and propn_count < 2 and verb_count < 1 and num_count < 1 and (noun_count != 1 and propn_count != 1)):
                 important_words_stripped[i] = ''
+
+    for i in range(len(important_words_stripped)):
+        split_string = important_words_stripped[i].split()
+        for j in range(len(split_string)):
+            if split_string[j] == 'tomorrow':
+                tmrw = str(date.today() + timedelta(days=1))
+                important_words_stripped[i] = important_words_stripped[i].replace('tomorrow', 'on ' + convert_datenum_to_word(tmrw))
 
     # remove blank indexes again
     important_words_stripped2 = []
@@ -144,6 +152,26 @@ def parse_todo_list2(message):
     #print(important_words_stripped)
 
     return important_words_stripped2
+
+def convert_datenum_to_word(thedate):
+    months = {
+        '01': 'January',
+        '02': 'February',
+        '03': 'March',
+        '04': 'April',
+        '05': 'May',
+        '06': 'June',
+        '07': 'July',
+        '08': 'August',
+        '09': 'September',
+        '10': 'October',
+        '11': 'November',
+        '12': 'December'
+    }
+
+    nums = thedate.split('-')
+
+    return months[nums[1]] + ' ' + str(nums[2]) + ', ' + nums[0]
 
 if __name__ == "__main__":
     #sentence = input('enter something: ')
