@@ -104,6 +104,8 @@
         "tag": "todo",
         "patterns": [
             "todo list",
+            "to-do",
+            "to do",
             "create todo list",
             "make todo list",
             "new to-do list",

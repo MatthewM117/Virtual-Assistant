@@ -34,6 +34,10 @@ def parse_todo_list2(message):
         if i in message:
             message = message.replace(i, '')
     #print(message)
+
+    if 'for tomorrow' in message:
+        message = message.replace('for tomorrow', 'tomorrow')
+
     doc = nlp(message)
 
     # Extract tokens and POS tags
@@ -60,10 +64,15 @@ def parse_todo_list2(message):
         prev_word = i
         break
 
+    last_word_is_tmrw = False
+
     # gather conescutive nouns
     # need to hardcode some special cases such as 'finish' and 'clean' because spacy doesnt recognize it as a verb
     for i in my_dict:
         if index == len(my_dict) - 1:
+            if i == 'tomorrow':
+                last_word_is_tmrw = True
+
             if consecutive_nouns != '':
                 consecutive_nouns += i + ' '
                 important_words.append(consecutive_nouns.strip())
@@ -145,11 +154,12 @@ def parse_todo_list2(message):
             if (noun_count < 2 and propn_count < 2 and verb_count < 1 and num_count < 1 and (noun_count != 1 and propn_count != 1)):
                 important_words_stripped[i] = ''
 
+    tmrw = str(date.today() + timedelta(days=1))
+
     for i in range(len(important_words_stripped)):
         split_string = important_words_stripped[i].split()
         for j in range(len(split_string)):
             if split_string[j] == 'tomorrow':
-                tmrw = str(date.today() + timedelta(days=1))
                 important_words_stripped[i] = important_words_stripped[i].replace('tomorrow', 'on ' + convert_datenum_to_word(tmrw))
 
     # remove blank indexes again
@@ -161,6 +171,11 @@ def parse_todo_list2(message):
     
     #print(important_words_stripped)
 
+    # add tomorrow to the end of each task if tmrw was said at the end
+    for i in range(len(important_words_stripped2)):
+        important_words_stripped2[i] += ' tomorrow'
+        important_words_stripped2[i] = important_words_stripped2[i].replace('tomorrow', 'on ' + convert_datenum_to_word(tmrw))
+    
     return important_words_stripped2
 
 def convert_datenum_to_word(thedate):
