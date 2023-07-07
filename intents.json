@@ -38,32 +38,6 @@
         ]
     },
     {
-        "tag": "calendar",
-        "patterns": [
-            "add to my calendar",
-            "schedule for",
-            "book for",
-            "mark in calender",
-            "create event on"
-        ],
-        "responses": [
-            "Okay, I have set that date in your calendar!",
-            "Done! I have marked that date in your calendar."
-        ]
-    },
-    {
-        "tag": "reminder",
-        "patterns": [
-            "set reminder for",
-            "set reminder on",
-            "create reminder on"
-        ],
-        "responses": [
-            "I have set a reminder for you.",
-            "Okay, the reminder has been set!"
-        ]
-    },
-    {
         "tag": "creators",
         "patterns": [
             "who created you",
@@ -103,17 +77,16 @@
     {
         "tag": "todo",
         "patterns": [
+            "what is on my todo list for",
+            "what's is on my to do list for",
+            "whats is on my to do list for",
+            "what do i have to do",
             "todo list",
-            "to-do",
-            "to do",
-            "create todo list",
-            "make todo list",
-            "new to-do list",
-            "add to to-do list",
-            "set to do list"
+            "to-do list",
+            "to do list"
         ],
         "responses": [
-            "I have added those things to your to-do list."
+            "You have to do ____ on ______."
         ]
     }
 

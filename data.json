@@ -1,0 +1,22 @@
+{
+    "todolist": [
+        {
+            "title": "test todo list item",
+            "due_date": "2023-01-01"
+        },
+        {
+            "title": "test todo list item number two",
+            "due_date": "2023-01-02"
+        },
+        {
+            "title": "testing appending",
+            "due_date": "june 1st 2023"
+        }
+    ],
+    "calendar": [
+        {
+            "title": "test calendar event",
+            "date": "october 1 2023"
+        }
+    ]
+}

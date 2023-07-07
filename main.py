@@ -13,6 +13,7 @@ from kivy.clock import Clock
 #import threading
 from tools import parse_todo_list2
 from calendar_utils import parse_calendar_message
+from todolist import search_todo_list
 
 from kivy.config import Config
 Config.set('graphics', 'width', '390')
@@ -73,6 +74,23 @@ class MainWindow(Screen):
 
     # add a debounce to not allow users to type another message before ai is done talking.
 
+    def find_date(self):
+        months = [
+            'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november',
+            'december', 'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sept', 'aug', 'oct', 'nov', 'dec'
+        ]
+
+    def find_todolist_item(self, date):
+        self.index = 0
+        self.ai_answer.text = ''
+        todolist_items = search_todo_list(date)
+        self.result = 'On ' + date + ' you have: '
+        for i in todolist_items:
+            self.result += i + ' '
+        Clock.schedule_interval(self.animate_text, 0.1)
+        self.themessage.text = ''
+
+
     def enter_message(self):
         ints = predict_class(self.themessage.text)
         #{'intent': 'greetings', 'probability': '0.9999906'}] = near perfect match
@@ -88,12 +106,15 @@ class MainWindow(Screen):
             Clock.schedule_interval(self.animate_text, 0.1)
             self.themessage.text = ''
             return
+        
         if ints[0]['intent'] == 'todo':
-            self.create_todo_list()
+            self.find_todolist_item('june 1st 2023')
             return
+        '''
         elif ints[0]['intent'] == 'calendar':
             self.create_calendar_event()
             return
+        '''
         self.result = get_response(ints, intents)
         self.index = 0
         self.ai_answer.text = ''
