@@ -9,6 +9,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from pyobjus import autoclass, objc_str
+from kivy.utils import platform
 #from texttospeech import text_to_speech
 #import threading
 from tools import parse_todo_list2
@@ -125,7 +127,33 @@ class MainWindow(Screen):
         self.themessage.text = ''
 
 class SecondWindow(Screen):
-    pass
+    
+    def show_photo_picker(instance):
+        if platform != 'ios':
+            print("Photo selection is only available on iOS.")
+            return
+
+        from rubicon.objc.eventloop import EventLoop
+        from rubicon.objc.runtime import objc_method
+
+        UIApplication = autoclass('UIApplication')
+        UIImagePickerController = autoclass('UIImagePickerController')
+        root_view_controller = UIApplication.sharedApplication().keyWindow.rootViewController
+
+        @objc_method
+        def handle_photo_pick(_self, _cmd, picker, info):
+            selected_image = info.objectForKey_(UIImagePickerController.InfoKey.originalImage)
+            # Process the selected image
+            print("Selected Photo:", selected_image)
+
+        image_picker = UIImagePickerController.alloc().init()
+        image_picker.setSourceType_(UIImagePickerController.SourceTypePhotoLibrary)
+        image_picker.setDelegate_(None)
+
+        EventLoop.main().run_until_complete(
+            root_view_controller.presentViewController_animated_completion_(image_picker, True, None)
+        )
+
 
 class WindowManager(ScreenManager):
     pass

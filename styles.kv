@@ -64,8 +64,20 @@ WindowManager:
 <SecondWindow>:
     name: "secondwindow"
 
-    Button: 
-        text: "Back"
-        on_release:
-            app.root.current = "mainwindow"
-            root.manager.transition.direction = "right"
+    FloatLayout:
+
+        Button: 
+            text: "Back"
+            pos_hint: {"center_x": 0.1, "center_y": 0.6}
+            size_hint: 0.1, 0.05
+            background_color: (0,0,1,1)
+            on_release:
+                app.root.current = "mainwindow"
+                root.manager.transition.direction = "right"
+
+        Button:
+            text: "Upload"
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+            size_hint: 0.1, 0.1
+            background_color: (0,0,1,1)
+            on_release: root.show_photo_picker()
