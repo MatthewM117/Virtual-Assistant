@@ -2,13 +2,9 @@ import json
 
 def write_json_todolist(new_data, filename='data.json'):
     with open(filename,'r+') as file:
-          # First we load existing data into a dict.
         file_data = json.load(file)
-        # Join new_data with file_data inside emp_details
         file_data["todolist"].append(new_data)
-        # Sets file's current position at offset.
         file.seek(0)
-        # convert back to json.
         json.dump(file_data, file, indent = 4)
 
 def add_to_todo_list(title, date):
@@ -58,9 +54,9 @@ def search_todo_list(date):
 if __name__ == '__main__':
     add_to_todo_list('testing appending', 'june 1st 2023')
     #read_todo_list_data()
-    '''
+    
     todo_list_data = read_todo_list_data()
     for i in todo_list_data['todolist']:
         print(i['title'])
-    '''
+    
 

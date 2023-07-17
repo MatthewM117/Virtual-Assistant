@@ -76,11 +76,14 @@ class MainWindow(Screen):
 
     # add a debounce to not allow users to type another message before ai is done talking.
 
-    def find_date(self):
+    def find_month(self, word):
         months = [
             'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november',
             'december', 'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sept', 'aug', 'oct', 'nov', 'dec'
         ]
+        if word in months:
+            return True
+        return False
 
     def find_todolist_item(self, date):
         self.index = 0
@@ -92,6 +95,13 @@ class MainWindow(Screen):
         Clock.schedule_interval(self.animate_text, 0.1)
         self.themessage.text = ''
 
+    def extract_date(self):
+        themessage_list = self.themessage.text.split(' ')
+        for i in range(0, len(themessage_list)):
+            if self.find_month(themessage_list[i]):
+                if (themessage_list[i + 1].isnumeric()):
+                    return themessage_list[i] + ' ' + themessage_list[i + 1]
+        return ''
 
     def enter_message(self):
         ints = predict_class(self.themessage.text)
@@ -110,7 +120,8 @@ class MainWindow(Screen):
             return
         
         if ints[0]['intent'] == 'todo':
-            self.find_todolist_item('june 1st 2023')
+            self.find_todolist_item(self.extract_date())
+            self.themessage.text = ''
             return
         '''
         elif ints[0]['intent'] == 'calendar':

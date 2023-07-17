@@ -11,12 +11,20 @@
         {
             "title": "testing appending",
             "due_date": "june 1st 2023"
+        },
+        {
+            "title": "testing appending",
+            "due_date": "july 1"
         }
     ],
     "calendar": [
         {
             "title": "test calendar event",
             "date": "october 1 2023"
+        },
+        {
+            "title": "test calendar event",
+            "date": "october 2 2023"
         }
     ]
 }
