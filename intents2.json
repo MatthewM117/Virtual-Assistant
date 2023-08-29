@@ -75,35 +75,19 @@
         ]
     },
     {
-        "tag": "extractCalendar",
+        "tag": "todo",
         "patterns": [
-            "what is on my calendar",
-            "what's on my calendar",
-            "whats is on my calendar for",
-            "whats is on my calendar on",
-            "what do i have on",
-            "am i free",
-            "am i busy",
-            "what do i have to do on",
-            "what does my schedule look like"
+            "what is on my todo list for",
+            "what's is on my to do list for",
+            "whats is on my to do list for",
+            "what do i have to do",
+            "todo list",
+            "to-do list",
+            "to do list"
         ],
         "responses": [
-            "extract calendar"
-        ]
-    },
-    {
-        "tag": "addCalendar",
-        "patterns": [
-            "add to my calendar",
-            "add to my to-do list",
-            "add to my to do list",
-            "put on my calendar",
-            "schedule event",
-            "schedule on my calendar",
-            "create calendar event"
-        ],
-        "responses": [
-            "add calendar"
+            "You have to do ____ on ______."
         ]
     }
+
 ]}

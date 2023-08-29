@@ -11,6 +11,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import SGD
 from keras.callbacks import LearningRateScheduler
+import tensorflow as tf
 
 lemmatizer = WordNetLemmatizer()
 intents = json.loads(open('intents.json').read())
@@ -71,12 +72,18 @@ def learning_rate_schedule(epoch):
 '''
 
 # 'decay' parameter is deprecated. try to convert to learning rate schedule https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/LearningRateSchedule
-sgd = SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+# ----------- THIS LINE BELOW NEEDS TO WORK. TRY DOWNGRADING TENSORFLOW VERSION ---------------
+#sgd = SGD(learning_rate=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+sgd = tf.keras.optimizers.SGD(learning_rate=0.01, weight_decay=1e-6, momentum=0.9, nesterov=True)
+#epochs = 200
+#learning_rate = 0.01
+#decay_rate = learning_rate / epochs
+#sgd = tf.keras.optimizers.legacy.Adam(learning_rate=learning_rate, decay=decay_rate)
 
 #lr_scheduler = LearningRateScheduler(learning_rate_schedule)
 
 model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 #model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1, callbacks=[lr_scheduler])
 hist = model.fit(np.array(train_x), np.array(train_y), epochs=200, batch_size=5, verbose=1)
-model.save('virtualassistant_model.h5', hist)
+model.save('virtualassistant_model2.h5', hist)
 print("Done!")
